@@ -27,7 +27,7 @@ public class ELasticSearchOutputWriter<T extends SerializableData> extends Abstr
 
 
     public ELasticSearchOutputWriter(String urlWithPort,String indexName,boolean reIndex,String objectType){
-
+//        this.mode=OutputFormat.JSON;
         this.reIndex=reIndex;
         this.objectType=objectType;
         factory.setHttpClientConfig(new HttpClientConfig
