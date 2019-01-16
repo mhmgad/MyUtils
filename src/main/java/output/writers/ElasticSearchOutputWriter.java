@@ -14,7 +14,7 @@ import io.searchbox.indices.IndicesExists;
 import java.io.IOException;
 import java.util.Collection;
 
-public class ELasticSearchOutputWriter<T extends SerializableData> extends AbstractOutputChannel<T>{
+public class ElasticSearchOutputWriter<T extends SerializableData> extends AbstractOutputChannel<T>{
 
     private final String objectType;
     private final boolean reIndex;
@@ -26,7 +26,9 @@ public class ELasticSearchOutputWriter<T extends SerializableData> extends Abstr
     String indexName;
 
 
-    public ELasticSearchOutputWriter(String urlWithPort,String indexName,boolean reIndex,String objectType){
+
+
+    public ElasticSearchOutputWriter(String urlWithPort, String indexName, boolean reIndex, String objectType){
 //        this.mode=OutputFormat.JSON;
         this.reIndex=reIndex;
         this.objectType=objectType;
