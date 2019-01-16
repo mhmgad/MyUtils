@@ -12,7 +12,9 @@ import io.searchbox.indices.DeleteIndex;
 import io.searchbox.indices.IndicesExists;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 public class ElasticSearchOutputWriter<T extends SerializableData> extends AbstractOutputChannel<T>{
 
@@ -22,6 +24,7 @@ public class ElasticSearchOutputWriter<T extends SerializableData> extends Abstr
 
     JestClient client;
 
+    List<Index> buffer =new ArrayList<>(5000);
 
     String indexName;
 
@@ -76,18 +79,39 @@ public class ElasticSearchOutputWriter<T extends SerializableData> extends Abstr
 
     @Override
     public void write(T record) {
-        try {
+//        try {
             Index index = new Index.Builder(record).index(indexName).type(objectType).build();
-            client.execute(index);
+//            client.execute(index);
+            addToBuffer(index);
+
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+    }
+
+    private synchronized void addToBuffer(Index index) {
+        buffer.add(index);
+        if (buffer.size()>1000){
+            flushBuffer();
+        }
+    }
+
+    private synchronized void flushBuffer() {
+        try {
+            Bulk.Builder bulkIndexBuilder = new Bulk.Builder();
+            buffer.forEach(i-> bulkIndexBuilder.addAction(i));
+            BulkResult res = client.execute(bulkIndexBuilder.build());
+            buffer=new ArrayList<>(5000);
         } catch (IOException e) {
             e.printStackTrace();
         }
+
     }
 
     @Override
     public boolean close() {
-
-        return false;
+            flushBuffer();
+        return true;
     }
 
     @Override
