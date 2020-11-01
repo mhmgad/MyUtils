@@ -91,7 +91,7 @@
                 <outputDirectory>${project.build.directory}/mvn-repo</outputDirectory> <!-- matches distribution management repository url above -->
                 <branch>refs/heads/mvn-repo</branch>                       <!-- remote branch name -->
                 <includes><include>**/*</include></includes>
-                <repositoryName>KGUtils</repositoryName>      <!-- github repo name -->
+                <repositoryName>MyUtils</repositoryName>      <!-- github repo name -->
                 <repositoryOwner>mhmgad</repositoryOwner>    <!-- github username  -->
             </configuration>
             <executions>
